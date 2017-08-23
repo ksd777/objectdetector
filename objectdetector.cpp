@@ -1,8 +1,22 @@
+#ifdef GPU
+    #define BLOCK 512
+
+    #include "cuda_runtime.h"
+    #include "curand.h"
+    #include "cublas_v2.h"
+
+    #ifdef CUDNN
+    #include "cudnn.h"
+    #endif
+#endif
+
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-#include <darknet.h>
+#include "darknet.h"
 
 #if defined(__cplusplus)
 }
@@ -185,7 +199,7 @@ int main(int argc, char **argv)
         Mat img;
 
 
-        namedWindow("edges",1);
+        //namedWindow("edges",1);
 
 
         ////////////////////////////////////////////////////////////////////////
@@ -221,11 +235,13 @@ int main(int argc, char **argv)
                         if( pRequest->isOK() ) {
                                 // display/process/store or do whatever you like with the image here
 
+				/*
                                 img = Mat(
                                         pRequest->imageHeight.read(),
                                         pRequest->imageWidth.read(),
                                         CV_8UC1,
                                         pRequest->imageData.read());
+				*/
 
                                 // image im = load_image_color(input,0,0)
                                 image im;
@@ -268,9 +284,10 @@ int main(int argc, char **argv)
                                 }
 
                                 draw_detections(im, l.w*l.h*l.n, thresh, boxes, probs, masks, names, alphabet, l.classes);
-                                save_image(im, "test" );
+                                
+				//save_image(im, "test" );
 
-                                imshow("edges", img);
+                                //imshow("edges", img);
 
 
                                 delete im.data;
